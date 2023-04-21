@@ -11,6 +11,6 @@ class King(Piece):
         self.king_castle = False
         self.queen_castle = False
 
-    def move(self, pos: Pos):
+    def move(self, pos: Pos, other_piece) -> bool:
         # check for correct direction
-        pass
+        return False

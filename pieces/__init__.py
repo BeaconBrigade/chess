@@ -6,6 +6,12 @@ class Colour(Enum):
     WHITE = 0
     BLACK = 1
 
+    def __invert__(self):
+        if self == self.WHITE:
+            return self.BLACK
+        else:
+            return self.WHITE
+
 
 @dataclass
 class Pos:
@@ -36,7 +42,7 @@ class Piece:
         elif self.colour == Colour.BLACK:
             return self.LETTER.lower()
 
-    def move(self, pos: Pos):
+    def move(self, pos: Pos, other_piece) -> bool:
         raise MoveNotImplemented
 
 
