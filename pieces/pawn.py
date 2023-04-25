@@ -9,7 +9,7 @@ class Pawn(Piece):
         super().__init__(colour, pos)
         self.has_moved = False
 
-    def move(self, pos: Pos, other_piece: Piece) -> bool:
+    def verify_move(self, pos: Pos, other_piece: Piece) -> bool:
         # check for correct direction
         delta_x, delta_y = pos.x - self.pos.x, pos.y - self.pos.y
         print(f"x = {delta_x}, y = {delta_y}")

@@ -54,7 +54,7 @@ class Board:
         # check if valid
 
         if (self[pre] is None) or (self[new] is not None and self[new].colour == self[pre].colour) or (
-                                                                            not self[pre].move(new, self[new])):
+                                                                            not self[pre].verify_move(new, self[new])):
             raise InvalidMove()
         if self[pre].colour != self.turn:
             raise WrongTurn()

@@ -42,7 +42,7 @@ class Piece:
         elif self.colour == Colour.BLACK:
             return self.LETTER.lower()
 
-    def move(self, pos: Pos, other_piece) -> bool:
+    def verify_move(self, pos: Pos, other_piece) -> bool:
         raise MoveNotImplemented
 
 
