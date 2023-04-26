@@ -13,4 +13,4 @@ class King(Piece):
 
     def verify_move(self, pos: Pos, other_piece) -> bool:
         # check for correct direction
-        return False
+        return True
