@@ -94,13 +94,20 @@ def squares_between(pre: Pos, new: Pos) -> [Pos]:
 
     # moving diagonally
     if abs(delta_x) > 0 and abs(delta_y) > 0:
-        # this is a horse movement, every normal move should move
-        # the same in x and y.
+        # for every normal move x and y should be the same (excluding horses - but they don't worry about collisions)
         if abs(delta_x) != abs(delta_y):
             raise InvalidMove()
 
-        # TODO: find diagonal squares
-        pass
+        # each x between the two squares, and each y between the two squares
+
+        # these are the ranges from the x and y specific movements
+        x_range = range(pre.x + 1, new.x) if delta_x > 0 else range(pre.x - 1, new.x, -1)
+        y_range = range(pre.y + 1, new.y) if delta_y > 0 else range(pre.y - 1, new.y, -1)
+
+        arr = []
+        for (x, y) in zip(x_range, y_range):
+            arr.append(Pos(x, y))
+        return arr
 
     # move in the x direction
     if abs(delta_x) > 0:

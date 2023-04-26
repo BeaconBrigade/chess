@@ -73,6 +73,38 @@ class TestSquaresBetween(unittest.TestCase):
         intermediate = squares_between(Pos(0, 4), Pos(0, 1))
         self.assertEqual([Pos(0, 3), Pos(0, 2)], intermediate)
 
+    def test_diagonal_right_up_one(self):
+        intermediate = squares_between(Pos(0, 0), Pos(1, 1))
+        self.assertEqual([], intermediate)
+
+    def test_diagonal_right_up_two(self):
+        intermediate = squares_between(Pos(0, 0), Pos(2, 2))
+        self.assertEqual([Pos(1, 1)], intermediate)
+
+    def test_diagonal_left_up_one(self):
+        intermediate = squares_between(Pos(1, 0), Pos(0, 1))
+        self.assertEqual([], intermediate)
+
+    def test_diagonal_left_up_two(self):
+        intermediate = squares_between(Pos(2, 0), Pos(0, 2))
+        self.assertEqual([Pos(1, 1)], intermediate)
+
+    def test_diagonal_right_down_one(self):
+        intermediate = squares_between(Pos(0, 1), Pos(1, 0))
+        self.assertEqual([], intermediate)
+
+    def test_diagonal_right_down_two(self):
+        intermediate = squares_between(Pos(0, 2), Pos(2, 0))
+        self.assertEqual([Pos(1, 1)], intermediate)
+
+    def test_diagonal_left_down_one(self):
+        intermediate = squares_between(Pos(1, 1), Pos(0, 0))
+        self.assertEqual([], intermediate)
+
+    def test_diagonal_left_down_two(self):
+        intermediate = squares_between(Pos(2, 2), Pos(0, 0))
+        self.assertEqual([Pos(1, 1)], intermediate)
+
 
 if __name__ == '__main__':
     unittest.main()
