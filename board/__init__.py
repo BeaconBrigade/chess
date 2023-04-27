@@ -95,6 +95,9 @@ class Board:
 
         # TODO: en passant
 
+        if self[pre].LETTER == 'k':
+            self[pre].can_queen_castle = False
+            self[pre].can_king_castle = False
         self[pre].pos = new
         self[new] = self[pre]
         self[pre] = None
