@@ -43,10 +43,22 @@ class Board:
     def __delitem__(self, pos: Pos):
         self.grid[pos.y * 8 + pos.x] = None
 
-    def move(self, pre: Pos, new: Pos):
-        """ Move a piece on the board
-        pre: the square to move a piece from
-        new: the square to move the piece to
+    def move(self, pre: str, new: str):
+        """
+        Make a move. Throws an exception if the move is invalid
+        e.g.: board.move('e2', 'e4')
+        :param pre: coordinate to move from
+        :param new: coordinate to move to
+        """
+        pre = Pos.from_str(pre)
+        new = Pos.from_str(new)
+        self.move_coord(pre, new)
+
+    def move_coord(self, pre: Pos, new: Pos):
+        """
+        Move a piece on the board
+        :param pre: the square to move a piece from
+        :param new: the square to move the piece to
 
         new - pre: positive is right and up, negative left and down (from white's perspective)
 
@@ -67,12 +79,9 @@ class Board:
         if self[pre].colour != self.turn:
             raise WrongTurn()
 
-        # TODO: see if there's a collision
         # only if there's a knight
-        if self[pre].letter != 'n':
+        if self[pre].LETTER != 'n':
             intermediate = squares_between(pre, new)
-            import sys
-            print(intermediate, file=sys.stderr)
             for square in intermediate:
                 if self[square] is not None:
                     raise Blocked()
@@ -83,12 +92,19 @@ class Board:
 
         # TODO: en passant
 
+        self[pre].pos = new
         self[new] = self[pre]
         self[pre] = None
         self.turn = ~self.turn
 
 
 def squares_between(pre: Pos, new: Pos) -> [Pos]:
+    """
+    Find each square in between the two squares
+    :param pre: from square
+    :param new: to square
+    :return: list of each square in between the two points
+    """
     delta_x = new.x - pre.x
     delta_y = new.y - pre.y
 
@@ -118,7 +134,6 @@ def squares_between(pre: Pos, new: Pos) -> [Pos]:
         arr = []
         if delta_x > 0:
             for i in range(pre.x + 1, new.x):
-                print(Pos(i, new.y))
                 arr.append(Pos(i, new.y))
         else:
             for i in range(pre.x - 1, new.x, -1):
@@ -138,38 +153,3 @@ def squares_between(pre: Pos, new: Pos) -> [Pos]:
         return arr
 
     return []
-
-
-class InvalidCoordinate(Exception):
-    pass
-
-
-def parse_coord(pos: str) -> Pos:
-    file = -1
-    match pos[0]:
-        case 'a':
-            file = 0
-        case 'b':
-            file = 1
-        case 'c':
-            file = 2
-        case 'd':
-            file = 3
-        case 'e':
-            file = 4
-        case 'f':
-            file = 5
-        case 'g':
-            file = 6
-        case 'h':
-            file = 7
-
-    try:
-        rank = int(pos[1])
-    except ValueError:
-        raise InvalidCoordinate()
-
-    if rank not in range(0, 8):
-        raise InvalidCoordinate()
-
-    return Pos(file, rank)

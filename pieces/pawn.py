@@ -12,7 +12,6 @@ class Pawn(Piece):
     def verify_move(self, pos: Pos, other_piece: Piece) -> bool:
         # check for correct direction
         delta_x, delta_y = pos.x - self.pos.x, pos.y - self.pos.y
-        print(f"x = {delta_x}, y = {delta_y}")
 
         # piece is going wrong direction
         if self.colour == Colour.WHITE and delta_y < 0:

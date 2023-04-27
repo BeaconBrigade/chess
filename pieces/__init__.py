@@ -18,6 +18,13 @@ class Pos:
     x: int
     y: int
 
+    @staticmethod
+    def from_str(pos: str) -> 'Pos':
+        from board.parse import parse_coord
+        coord = parse_coord(pos)
+
+        return coord
+
 
 class MoveNotImplemented(Exception):
     pass
