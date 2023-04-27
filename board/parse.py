@@ -11,6 +11,9 @@ def parse_coord(pos: str) -> Pos:
     :param pos: The coordinate in chess notation, e.g.: e4 or d5 or h7
     :return: The parsed coordinate
     """
+    if len(pos) < 2:
+        raise InvalidCoordinate()
+
     file = -1
     match pos[0].lower():
         case 'a':

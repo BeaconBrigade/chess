@@ -1,17 +1,36 @@
-from board import Board
+from board import Board, Blocked, WrongTurn
+from board.parse import InvalidCoordinate
+from pieces import InvalidMove
 
 
 def main():
     board = Board()
-    board.move("e2", "e4")
-    board.move("e7", "e5")
-    board.move("d1", "h5")
-    board.move("b8", "c6")
-    board.move("f1", "c4")
-    board.move("g8", "f6")
-    print(board)
-    board.move("h5", "f7")
-    print(board)
+
+    while True:
+        print(board)
+        move_from = input("From:\t")
+        move_to = input("To:\t\t")
+
+        try:
+            board.move(move_from, move_to)
+        except InvalidMove:
+            show_error("That was not a valid move")
+        except Blocked:
+            show_error("That piece was blocked")
+        except WrongTurn:
+            show_error("That piece is the wrong colour")
+        except InvalidCoordinate:
+            if move_from == 'q' or move_to == 'q':
+                turn = board.turn.name.lower()
+                print(f'Finishing, {turn[0].upper()}{turn[1:]} resigned')
+                return
+
+            show_error("That was not a valid coordinate")
+
+
+def show_error(msg: str):
+    print(msg)
+    input("Hit enter to continue\t")
 
 
 if __name__ == '__main__':
