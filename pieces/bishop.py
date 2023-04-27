@@ -9,4 +9,9 @@ class Bishop(Piece):
 
     def verify_move(self, pos: Pos, other_piece) -> bool:
         # check for correct direction
+        delta_x, delta_y = pos.x - self.pos.x, pos.y - self.pos.y
+
+        # the piece must move diagonally
+        if delta_x == 0 or delta_y == 0:
+            return False
         return True

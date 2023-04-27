@@ -73,14 +73,17 @@ class Board:
             raise InvalidMove()
 
         # check if valid move
+        # the check if the other square has the same colour as the starting piece prevents a piece
+        # from moving zero squares since it will try to move onto itself
         if (self[pre] is None) or (self[new] is not None and self[new].colour == self[pre].colour) or (
                 not self[pre].verify_move(new, self[new])):
             raise InvalidMove()
         if self[pre].colour != self.turn:
             raise WrongTurn()
 
-        # only if there's a knight
+        # only if there's not a knight
         if self[pre].LETTER != 'n':
+            # squares between will also verify the piece moves properly in the diagonal direction (if applicable)
             intermediate = squares_between(pre, new)
             for square in intermediate:
                 if self[square] is not None:
