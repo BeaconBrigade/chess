@@ -34,7 +34,7 @@ class TestMove(unittest.TestCase):
     def test_collision_vertical(self):
         board = Board()
         try:
-            board.move_coord(Pos(4, 0), Pos(4, 2))
+            board.move_coord(Pos(3, 0), Pos(3, 2))
         except Blocked:
             return
         self.fail("moved through your own piece vertically")
