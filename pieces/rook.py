@@ -14,3 +14,6 @@ class Rook(Piece):
         if delta_x != 0 and delta_y != 0:
             return False
         return True
+
+    def __str__(self):
+        return f'Rook(pos={self.pos}, colour={self.colour})'

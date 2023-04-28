@@ -1,6 +1,6 @@
 import os
 
-from pieces import Piece, create_board_grid, Pos, InvalidMove, Colour
+from pieces import Piece, create_board_grid, Pos, InvalidMove, Colour, Move
 
 
 class WrongTurn(Exception):
@@ -19,10 +19,28 @@ class Board:
     """
     grid: [Piece | None]
     turn: Colour
+    half_moves: [Move]
+    move_number: int
+    half_move_count: int
+    en_passent_target: Pos | None
 
-    def __init__(self):
-        self.grid = create_board_grid()
-        self.turn = Colour.WHITE
+    def __init__(self, fen=None):
+        if fen is None:
+            self.grid = create_board_grid()
+            self.turn = Colour.WHITE
+            self.half_moves = []
+            self.move_number = 1
+            self.half_move_count = 0
+            self.en_passent_target = None
+        else:
+            from board.parse import parse_fen
+            board = parse_fen(fen)
+            self.grid = board.grid
+            self.turn = board.turn
+            self.half_moves = board.half_moves
+            self.move_number = board.move_number
+            self.half_move_count = board.half_move_count
+            self.en_passent_target = board.en_passent_target
 
     def __str__(self):
         string = ""
@@ -95,11 +113,27 @@ class Board:
 
         # TODO: en passant
 
+        # TODO: fifty move rule
+
+        # TODO: three move repetition
+
         if self[pre].LETTER == 'k':
             self[pre].can_queen_castle = False
             self[pre].can_king_castle = False
         if self[pre].LETTER == 'p':
             self[pre].has_moved = True
+            if abs(new.y - pre.y) == 2:
+                pos = Pos(new.x, new.y - 1 if self.turn == Colour.WHITE else new.y + 1)
+                self.en_passent_target = pos
+            else:
+                self.en_passent_target = None
+        else:
+            self.en_passent_target = None
+        self.half_move_count += 1
+        # if black just moved, that means we're onto a new move
+        if self.turn == Colour.BLACK:
+            self.move_number += 1
+        self.half_moves.append(Move(pre, new))
         self[pre].pos = new
         self[new] = self[pre]
         self[pre] = None

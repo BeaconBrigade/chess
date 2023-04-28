@@ -7,7 +7,10 @@ class Pawn(Piece):
 
     def __init__(self, colour: Colour, pos: Pos):
         super().__init__(colour, pos)
-        self.has_moved = False
+        if (self.colour == Colour.WHITE and pos.y == 1) or (self.colour == Colour.BLACK and pos.y == 6):
+            self.has_moved = False
+        else:
+            self.has_moved = True
 
     def verify_move(self, pos: Pos, other_piece: Piece) -> bool:
         # check for correct direction
@@ -36,3 +39,13 @@ class Pawn(Piece):
             return False
 
         return True
+
+    def __eq__(self, other: Piece) -> bool:
+        if not super().__eq__(other):
+            return False
+        if self.has_moved != other.has_moved:
+            return False
+        return True
+
+    def __str__(self):
+        return f'Pawn(pos={self.pos}, has_moved={self.has_moved} colour={self.colour})'

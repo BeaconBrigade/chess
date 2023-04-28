@@ -15,3 +15,6 @@ class Bishop(Piece):
         if delta_x == 0 or delta_y == 0:
             return False
         return True
+
+    def __str__(self):
+        return f'Bishop(pos={self.pos}, colour={self.colour})'

@@ -52,7 +52,22 @@ class Piece:
     def verify_move(self, pos: Pos, other_piece) -> bool:
         raise MoveNotImplemented
 
+    def __eq__(self, other: 'Piece') -> bool:
+        if other is None:
+            return False
+        if self.LETTER != other.LETTER:
+            return False
+        if self.colour != other.colour:
+            return False
+        if self.pos != other.pos:
+            return False
+        return True
 
+    def __str__(self):
+        return f'Piece(t={self.LETTER}, pos={self.pos}, colour={self.colour})'
+
+
+@dataclass
 class Move:
     start: Pos
     end: Pos

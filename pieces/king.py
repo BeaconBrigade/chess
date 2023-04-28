@@ -6,10 +6,10 @@ class King(Piece):
     can_king_castle: bool
     can_queen_castle: bool
 
-    def __init__(self, colour: Colour, pos: Pos):
+    def __init__(self, colour: Colour, pos: Pos, king_castle=True, queen_castle=True):
         super().__init__(colour, pos)
-        self.can_king_castle = True
-        self.can_queen_castle = True
+        self.can_king_castle = king_castle
+        self.can_queen_castle = queen_castle
 
     def verify_move(self, pos: Pos, other_piece) -> bool:
         # check for correct direction
@@ -19,3 +19,15 @@ class King(Piece):
         if (abs(delta_x) != 0 and abs(delta_x) != 1) or (abs(delta_y) != 0 and abs(delta_y) != 1):
             return False
         return True
+
+    def __eq__(self, other: Piece) -> bool:
+        if not super().__eq__(other):
+            return False
+        if self.can_king_castle != other.can_king_castle:
+            return False
+        if self.can_queen_castle != other.can_queen_castle:
+            return False
+        return True
+
+    def __str__(self):
+        return f'King(pos={self.pos}, king={self.can_king_castle}, queen={self.can_queen_castle}, colour={self.colour})'

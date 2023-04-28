@@ -21,3 +21,6 @@ class Knight(Piece):
             return False
 
         return True
+
+    def __str__(self):
+        return f'Knight(pos={self.pos}, colour={self.colour})'

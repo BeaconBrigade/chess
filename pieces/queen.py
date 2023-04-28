@@ -10,3 +10,6 @@ class Queen(Piece):
     def verify_move(self, pos: Pos, other_piece) -> bool:
         # check for correct direction
         return True
+
+    def __str__(self):
+        return f'Queen(pos={self.pos}, colour={self.colour})'
