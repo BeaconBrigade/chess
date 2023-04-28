@@ -132,7 +132,7 @@ def parse_fen(fen: str) -> Board:
                 piece.can_queen_castle = 'q' in castles
 
     try:
-        board.half_move_count = int(half_move_count)
+        board.half_move_count_50_rule = int(half_move_count)
     except ValueError:
         raise InvalidFen()
 

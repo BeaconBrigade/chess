@@ -10,7 +10,7 @@ class ParseFen(unittest.TestCase):
         self.assertEqual(create_board_grid(), board.grid)
         self.assertEqual(Colour.WHITE, board.turn)
         self.assertIsNone(board.en_passent_target)
-        self.assertEqual(0, board.half_move_count)
+        self.assertEqual(0, board.half_move_count_50_rule)
         self.assertEqual([], board.half_moves)
         self.assertEqual(1, board.move_number)
 
@@ -52,7 +52,7 @@ class ParseFen(unittest.TestCase):
         self.assertEqual(grid, board.grid)
         self.assertEqual(Colour.WHITE, board.turn)
         self.assertIsNone(board.en_passent_target)
-        self.assertEqual(2, board.half_move_count)
+        self.assertEqual(2, board.half_move_count_50_rule)
         self.assertEqual(9, board.move_number)
 
 

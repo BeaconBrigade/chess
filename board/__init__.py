@@ -1,4 +1,6 @@
 import os
+from dataclasses import dataclass
+from enum import Enum
 
 from pieces import Piece, create_board_grid, Pos, InvalidMove, Colour, Move
 
@@ -11,6 +13,22 @@ class Blocked(Exception):
     pass
 
 
+class GameState(Enum):
+    RUNNING = 0
+    DRAW = 1
+    WIN_WHITE = 2
+    WIN_BLACK = 3
+
+
+class Draw(Exception):
+    pass
+
+
+@dataclass
+class Victory(Exception):
+    colour: Colour
+
+
 class Board:
     """ Represents a chess board.
 
@@ -21,8 +39,9 @@ class Board:
     turn: Colour
     half_moves: [Move]
     move_number: int
-    half_move_count: int
+    half_move_count_50_rule: int
     en_passent_target: Pos | None
+    game_state: GameState
 
     def __init__(self, fen=None):
         if fen is None:
@@ -30,7 +49,7 @@ class Board:
             self.turn = Colour.WHITE
             self.half_moves = []
             self.move_number = 1
-            self.half_move_count = 0
+            self.half_move_count_50_rule = 0
             self.en_passent_target = None
         else:
             from board.parse import parse_fen
@@ -39,8 +58,9 @@ class Board:
             self.turn = board.turn
             self.half_moves = board.half_moves
             self.move_number = board.move_number
-            self.half_move_count = board.half_move_count
+            self.half_move_count_50_rule = board.half_move_count_50_rule
             self.en_passent_target = board.en_passent_target
+        self.game_state = GameState.RUNNING
 
     def __str__(self):
         string = ""
@@ -85,6 +105,13 @@ class Board:
         if pre.y < new.y the piece moved up the board (towards the 8th rank)
         if pre.y > new.y the piece moved down the board (towards the 1st rank)
         """
+        if self.game_state == GameState.DRAW:
+            raise Draw()
+        elif self.game_state == GameState.WIN_WHITE:
+            raise Victory(Colour.WHITE)
+        elif self.game_state == GameState.WIN_BLACK:
+            raise Victory(Colour.BLACK)
+
         # check if squares are in bounds
         board_range = range(0, 8)
         if pre.x not in board_range or pre.y not in board_range or new.x not in board_range or new.y not in board_range:
@@ -101,7 +128,7 @@ class Board:
 
         # only if there's not a knight
         if self[pre].LETTER != 'n':
-            # squares between will also verify the piece moves properly in the diagonal direction (if applicable)
+            # squares_between will also verify the piece moves properly in the diagonal direction (if applicable)
             intermediate = squares_between(pre, new)
             for square in intermediate:
                 if self[square] is not None:
@@ -122,6 +149,8 @@ class Board:
             self[pre].can_king_castle = False
         if self[pre].LETTER == 'p':
             self[pre].has_moved = True
+            # reset 50 move rule, set to -1 because we increment it next
+            self.half_move_count_50_rule = -1
             if abs(new.y - pre.y) == 2:
                 pos = Pos(new.x, new.y - 1 if self.turn == Colour.WHITE else new.y + 1)
                 self.en_passent_target = pos
@@ -129,7 +158,7 @@ class Board:
                 self.en_passent_target = None
         else:
             self.en_passent_target = None
-        self.half_move_count += 1
+        self.half_move_count_50_rule += 1
         # if black just moved, that means we're onto a new move
         if self.turn == Colour.BLACK:
             self.move_number += 1
@@ -138,6 +167,10 @@ class Board:
         self[new] = self[pre]
         self[pre] = None
         self.turn = ~self.turn
+
+        # TODO: check for checkmate
+
+        # TODO: check for draw
 
 
 def squares_between(pre: Pos, new: Pos) -> [Pos]:
