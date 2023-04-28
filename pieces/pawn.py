@@ -31,8 +31,8 @@ class Pawn(Piece):
         if abs(delta_y) == 2 and abs(delta_x) == 1:
             return False
 
-        # if we're moving horizontally, a piece of the opposite colour must be there
-        if abs(delta_x) == 1 and (other_piece is None or other_piece.colour == self.colour):
+        # can't move by two squares multiple times
+        if abs(delta_y) == 2 and self.has_moved:
             return False
 
         return True

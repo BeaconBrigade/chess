@@ -98,6 +98,8 @@ class Board:
         if self[pre].LETTER == 'k':
             self[pre].can_queen_castle = False
             self[pre].can_king_castle = False
+        if self[pre].LETTER == 'p':
+            self[pre].has_moved = True
         self[pre].pos = new
         self[new] = self[pre]
         self[pre] = None
