@@ -1,4 +1,4 @@
-from board import Board, Blocked, WrongTurn
+from board import Board, Blocked, WrongTurn, Checked
 from board.parse import InvalidCoordinate
 from pieces import InvalidMove
 
@@ -19,12 +19,13 @@ def main():
             show_error("That piece was blocked")
         except WrongTurn:
             show_error("That piece is the wrong colour")
+        except Checked:
+            show_error("Your king is still in check")
         except InvalidCoordinate:
             if move_from == 'q' or move_to == 'q':
                 turn = board.turn.name.lower()
                 print(f'Finishing, {turn[0].upper()}{turn[1:]} resigned')
                 return
-
             show_error("That was not a valid coordinate")
 
 

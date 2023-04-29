@@ -1,3 +1,4 @@
+import copy
 import os
 from dataclasses import dataclass
 from enum import Enum
@@ -27,6 +28,10 @@ class Draw(Exception):
 @dataclass
 class Victory(Exception):
     colour: Colour
+
+
+class Checked(Exception):
+    pass
 
 
 class Board:
@@ -134,7 +139,18 @@ class Board:
                 if self[square] is not None:
                     raise Blocked()
 
-        # TODO: see if there's a check on the king
+        from board.check import king_in_check
+        temp_prev = copy.deepcopy(self[pre])
+        temp_new = copy.deepcopy(self[new])
+        self[pre].pos = new
+        self[new] = self[pre]
+        self[pre] = None
+        if king_in_check(self, self.turn):
+            self[pre] = temp_prev
+            self[new] = temp_new
+            raise Checked()
+        self[pre] = temp_prev
+        self[new] = temp_new
 
         # TODO: king castling
 
