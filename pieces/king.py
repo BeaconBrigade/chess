@@ -20,6 +20,27 @@ class King(Piece):
             return False
         return True
 
+    def valid_moves(self) -> [Pos]:
+        moves = []
+        if self.pos.x > 0:
+            moves.append(Pos(self.pos.x - 1, self.pos.y))
+            if self.pos.y > 0:
+                moves.append(Pos(self.pos.x - 1, self.pos.y - 1))
+            if self.pos.y < 7:
+                moves.append(Pos(self.pos.x - 1, self.pos.y + 1))
+        if self.pos.x < 7:
+            moves.append(Pos(self.pos.x + 1, self.pos.y))
+            if self.pos.y > 0:
+                moves.append(Pos(self.pos.x + 1, self.pos.y - 1))
+            if self.pos.y < 7:
+                moves.append(Pos(self.pos.x + 1, self.pos.y + 1))
+        if self.pos.y > 0:
+            moves.append(Pos(self.pos.x, self.pos.y - 1))
+        if self.pos.y < 7:
+            moves.append(Pos(self.pos.x, self.pos.y + 1))
+
+        return moves
+
     def __eq__(self, other: Piece) -> bool:
         if not super().__eq__(other):
             return False

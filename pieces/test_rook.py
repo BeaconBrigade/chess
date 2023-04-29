@@ -2,6 +2,7 @@ import unittest
 
 from board import Board
 from pieces import InvalidMove, Colour, Pos
+from pieces.rook import Rook
 
 
 class RookMove(unittest.TestCase):
@@ -32,6 +33,18 @@ class RookMove(unittest.TestCase):
         except InvalidMove:
             return
         self.fail("rook moved diagonally")
+
+    def test_valid_moves(self):
+        rook = Rook(Colour.WHITE, Pos(0, 0))
+        self.assertCountEqual(
+            [Pos(1, 0), Pos(2, 0), Pos(3, 0), Pos(4, 0), Pos(5, 0), Pos(6, 0), Pos(7, 0), Pos(0, 1), Pos(0, 2),
+             Pos(0, 3), Pos(0, 4), Pos(0, 5), Pos(0, 6), Pos(0, 7)], rook.valid_moves())
+
+    def test_valid_centre(self):
+        rook = Rook(Colour.WHITE, Pos(4, 4))
+        self.assertCountEqual(
+            [Pos(5, 4), Pos(6, 4), Pos(7, 4), Pos(3, 4), Pos(2, 4), Pos(1, 4), Pos(0, 4), Pos(4, 5), Pos(4, 6),
+             Pos(4, 7), Pos(4, 3), Pos(4, 2), Pos(4, 1), Pos(4, 0)], rook.valid_moves())
 
 
 if __name__ == '__main__':

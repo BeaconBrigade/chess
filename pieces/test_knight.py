@@ -1,7 +1,8 @@
 import unittest
 
 from board import Board
-from pieces import Pos, InvalidMove
+from pieces import Pos, InvalidMove, Colour
+from pieces.knight import Knight
 
 
 class KnightMove(unittest.TestCase):
@@ -39,6 +40,15 @@ class KnightMove(unittest.TestCase):
         except InvalidMove:
             return
         self.fail("knight moved horizontally")
+
+    def test_valid_moves(self):
+        knight = Knight(Colour.WHITE, Pos(0, 0))
+        self.assertCountEqual([Pos(1, 2), Pos(2, 1)], knight.valid_moves())
+
+    def test_valid_centre(self):
+        knight = Knight(Colour.WHITE, Pos(4, 4))
+        self.assertCountEqual([Pos(3, 6), Pos(5, 6), Pos(6, 5), Pos(6, 3), Pos(5, 2), Pos(3, 2), Pos(2, 3), Pos(2, 5)],
+                              knight.valid_moves())
 
 
 if __name__ == '__main__':

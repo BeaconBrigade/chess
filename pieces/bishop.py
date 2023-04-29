@@ -16,5 +16,23 @@ class Bishop(Piece):
             return False
         return True
 
+    def valid_moves(self) -> [Pos]:
+        moves = []
+        left_range = range(self.pos.x - 1, -1, -1)
+        right_range = range(self.pos.x + 1, 8)
+        up_range = range(self.pos.y + 1, 8)
+        down_range = range(self.pos.y - 1, -1, -1)
+
+        for (x, y) in zip(left_range, up_range):
+            moves.append(Pos(x, y))
+        for (x, y) in zip(left_range, down_range):
+            moves.append(Pos(x, y))
+        for (x, y) in zip(right_range, up_range):
+            moves.append(Pos(x, y))
+        for (x, y) in zip(right_range, down_range):
+            moves.append(Pos(x, y))
+
+        return moves
+
     def __str__(self):
         return f'Bishop(pos={self.pos}, colour={self.colour})'

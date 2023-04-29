@@ -22,5 +22,26 @@ class Knight(Piece):
 
         return True
 
+    def valid_moves(self) -> [Pos]:
+        moves = []
+        if self.pos.x < 7 and self.pos.y < 6:
+            moves.append(Pos(self.pos.x + 1, self.pos.y + 2))
+        if self.pos.x < 7 and self.pos.y > 1:
+            moves.append(Pos(self.pos.x + 1, self.pos.y - 2))
+        if self.pos.x < 6 and self.pos.y < 7:
+            moves.append(Pos(self.pos.x + 2, self.pos.y + 1))
+        if self.pos.x < 6 and self.pos.y > 0:
+            moves.append(Pos(self.pos.x + 2, self.pos.y - 1))
+        if self.pos.x > 0 and self.pos.y < 6:
+            moves.append(Pos(self.pos.x - 1, self.pos.y + 2))
+        if self.pos.x > 0 and self.pos.y > 1:
+            moves.append(Pos(self.pos.x - 1, self.pos.y - 2))
+        if self.pos.x > 1 and self.pos.y < 7:
+            moves.append(Pos(self.pos.x - 2, self.pos.y + 1))
+        if self.pos.x > 1 and self.pos.y > 0:
+            moves.append(Pos(self.pos.x - 2, self.pos.y - 1))
+
+        return moves
+
     def __str__(self):
         return f'Knight(pos={self.pos}, colour={self.colour})'

@@ -40,6 +40,20 @@ class Pawn(Piece):
 
         return True
 
+    def valid_moves(self) -> [Pos]:
+        moves = []
+        direction = 1 if self.colour == Colour.WHITE else -1
+
+        moves.append(Pos(self.pos.x, self.pos.y + 1 * direction))
+        if not self.has_moved:
+            moves.append(Pos(self.pos.x, self.pos.y + 2 * direction))
+        if self.pos.x > 0:
+            moves.append(Pos(self.pos.x - 1, self.pos.y + 1 * direction))
+        if self.pos.x < 7:
+            moves.append(Pos(self.pos.x + 1, self.pos.y + 1 * direction))
+
+        return moves
+
     def __eq__(self, other: Piece) -> bool:
         if not super().__eq__(other):
             return False

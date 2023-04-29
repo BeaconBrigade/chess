@@ -50,7 +50,10 @@ class Piece:
             return self.LETTER.lower()
 
     def verify_move(self, pos: Pos, other_piece) -> bool:
-        raise MoveNotImplemented
+        raise MoveNotImplemented()
+
+    def valid_moves(self) -> [Pos]:
+        raise MoveNotImplemented()
 
     def __eq__(self, other: 'Piece') -> bool:
         if other is None:

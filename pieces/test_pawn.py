@@ -1,7 +1,8 @@
 import unittest
 
 from board import Board
-from pieces import Pos, InvalidMove
+from pieces import Pos, InvalidMove, Colour
+from pieces.pawn import Pawn
 
 
 class PawnMove(unittest.TestCase):
@@ -23,6 +24,14 @@ class PawnMove(unittest.TestCase):
         except InvalidMove:
             return
         self.fail("pawn moved two squares twice")
+
+    def test_valid_moves(self):
+        pawn = Pawn(Colour.WHITE, Pos(0, 1))
+        self.assertCountEqual([Pos(0, 2), Pos(0, 3), Pos(1, 2)], pawn.valid_moves())
+
+    def test_valid_centre(self):
+        pawn = Pawn(Colour.WHITE, Pos(4, 1))
+        self.assertCountEqual([Pos(4, 2), Pos(4, 3), Pos(3, 2), Pos(5, 2)], pawn.valid_moves())
 
 
 if __name__ == '__main__':
