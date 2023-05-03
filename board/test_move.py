@@ -1,3 +1,4 @@
+import copy
 import unittest
 
 from board import Board, Blocked, squares_between
@@ -114,6 +115,27 @@ class TestSquaresBetween(unittest.TestCase):
     def test_diagonal_left_down_two(self):
         intermediate = squares_between(Pos(2, 2), Pos(0, 0))
         self.assertEqual([Pos(1, 1)], intermediate)
+
+
+class MoveRemoveMove(unittest.TestCase):
+    @staticmethod
+    def blank_callback():
+        pass
+
+    def test_no_change(self):
+        board = Board()
+        temp = copy.deepcopy(board)
+
+        board.apply_remove_move(Pos(4, 1), Pos(4, 2), self.blank_callback)
+
+        self.assertEqual(temp, board)
+
+    def test_no_change_2(self):
+        board = Board(fen='3k4/8/8/8/6b1/8/8/3K4 w - - 0 1')
+        temp = copy.deepcopy(board)
+
+        board.apply_remove_move(Pos(3, 0), Pos(2, 1), self.blank_callback)
+        self.assertEqual(temp, board)
 
 
 if __name__ == '__main__':

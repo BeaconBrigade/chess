@@ -38,6 +38,14 @@ class Pawn(Piece):
         if abs(delta_y) == 2 and self.has_moved:
             return False
 
+        # can't capture without moving horizontally
+        if other_piece is not None and abs(delta_x) == 0:
+            return False
+
+        # can only move horizontally if other square has a piece
+        if abs(delta_x) != 0 and other_piece is None:
+            return False
+
         return True
 
     def valid_moves(self) -> [Pos]:

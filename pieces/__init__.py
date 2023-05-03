@@ -69,6 +69,9 @@ class Piece:
     def __str__(self):
         return f'Piece(t={self.LETTER}, pos={self.pos}, colour={self.colour})'
 
+    def __repr__(self):
+        return str(self)
+
 
 @dataclass
 class Move:

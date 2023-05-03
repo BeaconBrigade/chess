@@ -86,6 +86,15 @@ class Board:
     def __delitem__(self, pos: Pos):
         self.grid[pos.y * 8 + pos.x] = None
 
+    def __repr__(self):
+        return f'Board(turn={self.turn}, game_state={self.game_state}, half_moves={self.half_moves}, move_number={self.move_number}, half_move_count_50_rule={self.half_move_count_50_rule}, en_passent_target={self.en_passent_target}, grid={self.grid})'
+
+    def __eq__(self, other):
+        return self.turn == other.turn and self.game_state == other.game_state and self.half_moves == other.half_moves \
+            and self.move_number == other.move_number and self.half_move_count_50_rule == \
+            other.half_move_count_50_rule and self.en_passent_target == other.en_passent_target \
+            and self.grid == other.grid
+
     def move(self, pre: str, new: str):
         """
         Make a move. Throws an exception if the move is invalid
@@ -140,17 +149,12 @@ class Board:
                     raise Blocked()
 
         from board.check import king_in_check
-        temp_prev = copy.deepcopy(self[pre])
-        temp_new = copy.deepcopy(self[new])
-        self[pre].pos = new
-        self[new] = self[pre]
-        self[pre] = None
-        if king_in_check(self, self.turn):
-            self[pre] = temp_prev
-            self[new] = temp_new
-            raise Checked()
-        self[pre] = temp_prev
-        self[new] = temp_new
+
+        def cb():
+            if king_in_check(self, self.turn):
+                raise Checked()
+
+        self.apply_remove_move(pre, new, cb)
 
         # TODO: king castling
 
@@ -184,9 +188,46 @@ class Board:
         self[pre] = None
         self.turn = ~self.turn
 
-        # TODO: check for checkmate
+        from board.check import is_in_checkmate
+        if is_in_checkmate(self, self.turn):
+            raise Victory(self.turn)
 
         # TODO: check for draw
+
+    def apply_remove_move(self, pre: Pos, new: Pos, callback):
+        """
+        Temporarily apply a move, call the callback, and then reset the board state.
+        Note: if an exception is thrown in the callback, it will be caught, then
+        the board will reset the board state and then throw the exception again
+        :param pre: From square
+        :param new: To square
+        :param callback: Function to call when board has intermediate state
+        :return: Returns the return value of the callback
+        """
+        if self[new] and self[new].colour == self.turn:
+            raise InvalidMove()
+        from board.check import move_can_reach
+        if self[pre].LETTER != 'n' and not move_can_reach(self, self[pre], new):
+            raise Blocked()
+        if not self[pre].verify_move(new, self[new]):
+            raise InvalidMove()
+        temp_prev = copy.deepcopy(self[pre])
+        temp_new = copy.deepcopy(self[new])
+        self[pre].pos = new
+        self[new] = self[pre]
+        self[pre] = None
+        err = None
+        ret = None
+        try:
+            ret = callback()
+        except Exception as e:
+            err = e
+        self[pre] = temp_prev
+        self[new] = temp_new
+
+        if err is not None:
+            raise err
+        return ret
 
 
 def squares_between(pre: Pos, new: Pos) -> [Pos]:

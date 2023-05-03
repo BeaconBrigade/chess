@@ -1,5 +1,5 @@
-from board import Board, squares_between
-from pieces import Colour, Pos, Piece
+from board import Board, squares_between, Blocked
+from pieces import Colour, Pos, Piece, InvalidMove
 
 
 class KingIsMissing(Exception):
@@ -45,6 +45,41 @@ def king_in_check(board: Board, colour: Colour) -> bool:
                 return True
 
     return False
+
+
+def is_in_checkmate(board: Board, colour: Colour) -> bool:
+    """
+    Check if a certain colour is in checkmate
+    :param board: The board
+    :param colour: The colour
+    :return: Whether the colour is checkmated
+    """
+    if not king_in_check(board, colour):
+        return False
+
+    def cb():
+        if king_in_check(board, colour):
+            return False
+        return True
+    # use a for i in range loop because, apply_remove_move mutates the original
+    # value in board.grid and replaces it with a new one. The for loop isn't aware
+    # so after the first potential move, the iterator variable references an out of
+    # date piece. By only using indexes we always have the up-to-date value.
+    for i in range(len(board.grid)):
+        if board.grid[i] is None or board.grid[i].colour != colour:
+            continue
+        moves = board.grid[i].valid_moves()
+        for move in moves:
+            try:
+                blocks = board.apply_remove_move(board.grid[i].pos, move, cb)
+            except InvalidMove:
+                continue
+            except Blocked:
+                continue
+            if blocks:
+                return False
+
+    return True
 
 
 def move_can_reach(board: Board, piece: Piece, move: Pos) -> bool:

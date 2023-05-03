@@ -1,4 +1,4 @@
-from board import Board, Blocked, WrongTurn, Checked
+from board import Board, Blocked, WrongTurn, Checked, Victory
 from board.parse import InvalidCoordinate
 from pieces import InvalidMove
 
@@ -27,6 +27,18 @@ def main():
                 print(f'Finishing, {turn[0].upper()}{turn[1:]} resigned')
                 return
             show_error("That was not a valid coordinate")
+        except Victory as v:
+            colour = v.colour.name.lower()
+            # ascii art by Brent James Benton from https://www.asciiart.eu/sports-and-outdoors/chess
+            print("   |\\_")
+            print("  /  .\\_")
+            print(" |   ___)")
+            print(" |    \\")
+            print(" |  =  |")
+            print(" /_____\\")
+            print("[_______]")
+            print(f"{colour[0].upper()}{colour[1:]} wins")
+            return
 
 
 def show_error(msg: str):
