@@ -1,8 +1,8 @@
 import unittest
 
-from board import Board
-from pieces import Pos, InvalidMove, Colour
-from pieces.knight import Knight
+from ..board import Board
+from . import Pos, InvalidMove, Colour
+from .knight import Knight
 
 
 class KnightMove(unittest.TestCase):

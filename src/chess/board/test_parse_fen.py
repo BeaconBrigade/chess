@@ -1,7 +1,7 @@
 import unittest
 
-from board import Board
-from pieces import create_board_grid, Colour, Pos
+from . import Board
+from ..pieces import create_board_grid, Colour, Pos
 
 
 class ParseFen(unittest.TestCase):
@@ -15,12 +15,12 @@ class ParseFen(unittest.TestCase):
         self.assertEqual(1, board.move_number)
 
     def test_oh_no_my_queen(self):
-        from pieces.king import King
-        from pieces.knight import Knight
-        from pieces.pawn import Pawn
-        from pieces.queen import Queen
-        from pieces.rook import Rook
-        from pieces.bishop import Bishop
+        from ..pieces.king import King
+        from ..pieces.knight import Knight
+        from ..pieces.pawn import Pawn
+        from ..pieces.queen import Queen
+        from ..pieces.rook import Rook
+        from ..pieces.bishop import Bishop
         board = Board(fen='r2Bk2r/ppp2ppp/2p5/8/4n1b1/3P4/PPP1KbPP/RN1Q1B1R w kq - 2 9')
         grid = [
             # 1

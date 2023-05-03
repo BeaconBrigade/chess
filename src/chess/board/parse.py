@@ -1,5 +1,5 @@
-from board import Board
-from pieces import Pos, Colour
+from . import Board
+from ..pieces import Pos, Colour
 
 
 class InvalidCoordinate(Exception):
@@ -62,12 +62,12 @@ class InvalidFen(Exception):
 
 
 def parse_fen(fen: str) -> Board:
-    from pieces.pawn import Pawn
-    from pieces.rook import Rook
-    from pieces.knight import Knight
-    from pieces.bishop import Bishop
-    from pieces.queen import Queen
-    from pieces.king import King
+    from ..pieces.pawn import Pawn
+    from ..pieces.rook import Rook
+    from ..pieces.knight import Knight
+    from ..pieces.bishop import Bishop
+    from ..pieces.queen import Queen
+    from ..pieces.king import King
 
     [pieces, end] = fen.split(' ', maxsplit=1)
     ranks = pieces.split('/')

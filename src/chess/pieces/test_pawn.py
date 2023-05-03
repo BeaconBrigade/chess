@@ -1,8 +1,8 @@
 import unittest
 
-from board import Board
-from pieces import Pos, InvalidMove, Colour
-from pieces.pawn import Pawn
+from ..board import Board
+from . import Pos, InvalidMove, Colour
+from .pawn import Pawn
 
 
 class PawnMove(unittest.TestCase):

@@ -1,8 +1,8 @@
 import copy
 import unittest
 
-from board import Board, Blocked, squares_between
-from pieces import Pos, InvalidMove
+from . import Board, Blocked, squares_between
+from ..pieces import Pos, InvalidMove
 
 
 class TestMove(unittest.TestCase):

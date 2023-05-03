@@ -20,7 +20,7 @@ class Pos:
 
     @staticmethod
     def from_str(pos: str) -> 'Pos':
-        from board.parse import parse_coord
+        from ..board.parse import parse_coord
         coord = parse_coord(pos)
 
         return coord
@@ -80,12 +80,12 @@ class Move:
 
 
 def create_board_grid() -> [Piece]:
-    from pieces.bishop import Bishop
-    from pieces.king import King
-    from pieces.knight import Knight
-    from pieces.pawn import Pawn
-    from pieces.queen import Queen
-    from pieces.rook import Rook
+    from .bishop import Bishop
+    from .king import King
+    from .knight import Knight
+    from .pawn import Pawn
+    from .queen import Queen
+    from .rook import Rook
 
     return [
         # 1

@@ -1,8 +1,8 @@
 import unittest
 
-from board import Board
-from pieces import Pos, Colour
-from pieces.queen import Queen
+from ..board import Board
+from . import Pos, Colour
+from .queen import Queen
 
 
 class QueenMove(unittest.TestCase):

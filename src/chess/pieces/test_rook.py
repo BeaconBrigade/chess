@@ -1,8 +1,8 @@
 import unittest
 
-from board import Board
-from pieces import InvalidMove, Colour, Pos
-from pieces.rook import Rook
+from ..board import Board
+from . import InvalidMove, Colour, Pos
+from .rook import Rook
 
 
 class RookMove(unittest.TestCase):

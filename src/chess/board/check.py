@@ -1,5 +1,5 @@
-from board import Board, squares_between, Blocked
-from pieces import Colour, Pos, Piece, InvalidMove
+from ..board import Board, squares_between, Blocked
+from ..pieces import Colour, Pos, Piece, InvalidMove
 
 
 class KingIsMissing(Exception):

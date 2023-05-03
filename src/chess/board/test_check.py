@@ -1,8 +1,8 @@
 import unittest
 
-from board import Board
-from board.check import king_in_check, is_in_checkmate
-from pieces import Colour
+from . import Board
+from .check import king_in_check, is_in_checkmate
+from ..pieces import Colour
 
 
 class Check(unittest.TestCase):

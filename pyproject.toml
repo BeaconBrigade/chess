@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "chess-beacon"
+version = "0.0.1"
+description = "Implementation of standard chess"
+authors = ["Ryan <beaconbrigade@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "src/chess"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.scripts]
+chess = "chess.__main__:main"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

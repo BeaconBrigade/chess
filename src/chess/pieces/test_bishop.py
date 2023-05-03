@@ -1,8 +1,8 @@
 import unittest
 
-from board import Board
-from pieces import InvalidMove, Pos, Colour
-from pieces.bishop import Bishop
+from ..board import Board
+from . import InvalidMove, Pos, Colour
+from .bishop import Bishop
 
 
 class BishopMove(unittest.TestCase):

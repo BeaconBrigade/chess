@@ -3,7 +3,7 @@ import os
 from dataclasses import dataclass
 from enum import Enum
 
-from pieces import Piece, create_board_grid, Pos, InvalidMove, Colour, Move
+from ..pieces import Piece, create_board_grid, Pos, InvalidMove, Colour, Move
 
 
 class WrongTurn(Exception):
@@ -57,7 +57,7 @@ class Board:
             self.half_move_count_50_rule = 0
             self.en_passent_target = None
         else:
-            from board.parse import parse_fen
+            from .parse import parse_fen
             board = parse_fen(fen)
             self.grid = board.grid
             self.turn = board.turn
@@ -148,7 +148,7 @@ class Board:
                 if self[square] is not None:
                     raise Blocked()
 
-        from board.check import king_in_check
+        from .check import king_in_check
 
         def cb():
             if king_in_check(self, self.turn):
@@ -188,7 +188,7 @@ class Board:
         self[pre] = None
         self.turn = ~self.turn
 
-        from board.check import is_in_checkmate
+        from .check import is_in_checkmate
         if is_in_checkmate(self, self.turn):
             raise Victory(self.turn)
 
@@ -206,7 +206,7 @@ class Board:
         """
         if self[new] and self[new].colour == self.turn:
             raise InvalidMove()
-        from board.check import move_can_reach
+        from .check import move_can_reach
         if self[pre].LETTER != 'n' and not move_can_reach(self, self[pre], new):
             raise Blocked()
         if not self[pre].verify_move(new, self[new]):

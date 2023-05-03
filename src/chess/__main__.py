@@ -1,6 +1,6 @@
-from board import Board, Blocked, WrongTurn, Checked, Victory
-from board.parse import InvalidCoordinate
-from pieces import InvalidMove
+from .board import Board, Blocked, WrongTurn, Checked, Victory
+from .board.parse import InvalidCoordinate
+from .pieces import InvalidMove
 
 
 def main():
@@ -9,7 +9,7 @@ def main():
     while True:
         print(board)
         move_from = input("From:\t")
-        move_to = input("To:\t\t")
+        move_to = input("To:\t")
 
         try:
             board.move(move_from, move_to)

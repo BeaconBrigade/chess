@@ -1,8 +1,8 @@
 import unittest
 
-from board import Board
-from pieces import InvalidMove, Colour, Pos
-from pieces.king import King
+from ..board import Board
+from . import InvalidMove, Colour, Pos
+from .king import King
 
 
 class KingMove(unittest.TestCase):
