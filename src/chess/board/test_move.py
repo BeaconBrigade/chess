@@ -2,7 +2,7 @@ import copy
 import unittest
 
 from . import Board, Blocked, squares_between
-from ..pieces import Pos, InvalidMove
+from ..pieces import Pos, InvalidMove, Move
 
 
 class TestMove(unittest.TestCase):
@@ -49,6 +49,32 @@ class TestMove(unittest.TestCase):
         except Blocked:
             return
         self.fail("moved through your own piece horizontally")
+
+    def test_error_in_the_wild(self):
+        # this didn't work when I reached this position in the cli
+        moves = [Move(start=Pos(x=4, y=1), end=Pos(x=4, y=3)), Move(start=Pos(x=4, y=6), end=Pos(x=4, y=4)),
+                 Move(start=Pos(x=6, y=0),
+                      end=Pos(x=5, y=2)), Move(start=Pos(x=6, y=7), end=Pos(x=5, y=5)),
+                 Move(start=Pos(x=3, y=1), end=Pos(x=3, y=3)), Move(start=Pos(x=4, y=4), end=Pos(x=3, y=3)),
+                 Move(start=Pos(x=5, y=2),
+                      end=Pos(x=3, y=3)), Move(start=Pos(x=5, y=5), end=Pos(x=4, y=3)),
+                 Move(start=Pos(x=3, y=0), end=Pos(x=4, y=1)), Move(start=Pos(x=3, y=6), end=Pos(x=3, y=4)),
+                 Move(start=Pos(x=5, y=1),
+                      end=Pos(x=5, y=2)), Move(start=Pos(x=5, y=7), end=Pos(x=2, y=4)),
+                 Move(start=Pos(x=5, y=2), end=Pos(x=4, y=3)), Move(start=Pos(x=2, y=4), end=Pos(x=3, y=3)),
+                 Move(start=Pos(x=4, y=3),
+                      end=Pos(x=3, y=4)), Move(start=Pos(x=3, y=7), end=Pos(x=4, y=6)),
+                 Move(start=Pos(x=4, y=1), end=Pos(x=4, y=6)), Move(start=Pos(x=4, y=7), end=Pos(x=4, y=6)),
+                 Move(start=Pos(x=2, y=0),
+                      end=Pos(x=6, y=4)), Move(start=Pos(x=5, y=6), end=Pos(x=5, y=5)),
+                 Move(start=Pos(x=2, y=1), end=Pos(x=2, y=2)), Move(start=Pos(x=3, y=3), end=Pos(x=2, y=2)),
+                 Move(start=Pos(x=1, y=0),
+                      end=Pos(x=2, y=2)), Move(start=Pos(x=5, y=5), end=Pos(x=6, y=4)),
+                 Move(start=Pos(x=5, y=0), end=Pos(x=2, y=3))
+                 ]
+        board = Board(move_list=moves)
+        board.move('b8', 'd7')
+        self.assertEqual('n', board[Pos.from_str('d7')].LETTER)
 
 
 class TestSquaresBetween(unittest.TestCase):

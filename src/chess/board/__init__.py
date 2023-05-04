@@ -48,7 +48,7 @@ class Board:
     en_passent_target: Pos | None
     game_state: GameState
 
-    def __init__(self, fen=None):
+    def __init__(self, fen=None, move_list=None):
         if fen is None:
             self.grid = create_board_grid()
             self.turn = Colour.WHITE
@@ -56,6 +56,7 @@ class Board:
             self.move_number = 1
             self.half_move_count_50_rule = 0
             self.en_passent_target = None
+            self.game_state = GameState.RUNNING
         else:
             from .parse import parse_fen
             board = parse_fen(fen)
@@ -65,6 +66,17 @@ class Board:
             self.move_number = board.move_number
             self.half_move_count_50_rule = board.half_move_count_50_rule
             self.en_passent_target = board.en_passent_target
+            from .check import is_in_checkmate
+            if is_in_checkmate(self, Colour.WHITE):
+                self.game_state = GameState.WIN_BLACK
+            elif is_in_checkmate(self, Colour.BLACK):
+                self.game_state = GameState.WIN_WHITE
+            else:
+                self.game_state = GameState.RUNNING
+            # TODO: handle stalemates here
+        if fen is None and move_list is not None:
+            for move in move_list:
+                self.move_coord(move.start, move.end)
         self.game_state = GameState.RUNNING
 
     def __str__(self):
@@ -190,7 +202,7 @@ class Board:
 
         from .check import is_in_checkmate
         if is_in_checkmate(self, self.turn):
-            raise Victory(self.turn)
+            raise Victory(~self.turn)
 
         # TODO: check for draw
 

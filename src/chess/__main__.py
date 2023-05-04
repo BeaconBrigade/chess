@@ -26,6 +26,10 @@ def main():
                 turn = board.turn.name.lower()
                 print(f'Finishing, {turn[0].upper()}{turn[1:]} resigned')
                 return
+            elif move_from == 'print' or move_to == 'print':
+                print(repr(board))
+                show_error("")
+                continue
             show_error("That was not a valid coordinate")
         except Victory as v:
             colour = v.colour.name.lower()
